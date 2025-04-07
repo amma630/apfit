@@ -1,0 +1,343 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Meal Log{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'meals.css' %}">
+
+<div class="meal-container">
+  <h2>🍴 Log Your Meal</h2>
+
+  <!-- ✅ Date Filter Form -->
+  <form method="GET" class="date-filter-form">
+    <label>From:</label>
+    <input type="date" name="start_date" value="{{ start_date }}">
+    <label>To:</label>
+    <input type="date" name="end_date" value="{{ end_date }}">
+    <button type="submit">Filter</button>
+  </form>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Meal</button>
+  </form>
+  <h3>Today's Macronutrient Distribution (%)</h3>
+<ul>
+  <li>Protein: {{ macro_percentages.protein }}%</li>
+  <li>Carbs: {{ macro_percentages.carbs }}%</li>
+  <li>Fat: {{ macro_percentages.fat }}%</li>
+</ul>
+
+<p>🥇 <strong>Most consumed:</strong> {{ most_eaten_macro|title }} ({{ most_percentage }}%)</p>
+<p>🥄 <strong>Least consumed:</strong> {{ least_eaten_macro|title }} ({{ least_percentage }}%)</p>
+
+
+  <h3>📅 Meals</h3>
+  <ul class="meal-list">
+    {% for log in logs %}
+      <li>
+        <img src="{% static 'food.jpg' %}" alt="Food Image" class="food-image">
+        <strong>{{ log.food_name }}</strong> - {{ log.total_calories }} kcal
+      </li>
+    {% empty %}
+      <li>No meals logged yet.</li>
+    {% endfor %}
+  </ul>
+
+  <h4>Total Calories: <span class="highlight">{{ total_calories }}</span> kcal</h4>
+  <p><strong>Tip:</strong> {{ recommendation }}</p>
+
+  <!-- Weekly Bar Chart -->
+  <h3>📊 Weekly Calorie Intake</h3>
+  <canvas id="weeklyChart" width="400" height="200"></canvas>
+
+  <!-- Daily Trend Line -->
+  <h3>📈 Daily Calorie Trend</h3>
+  <canvas id="trendChart" width="400" height="200"></canvas>
+
+  <!-- Macronutrient Pie -->
+  <h3>🍽️ Macronutrient Breakdown</h3>
+  <canvas id="macroChart" width="300" height="300"></canvas>
+
+  <!-- Macronutrient Radar -->
+  <h3>🛡️ Radar Analysis</h3>
+  <canvas id="macroRadarChart" width="300" height="300"></canvas>
+
+  <!-- Goal Progress Doughnut -->
+  <h3>🎯 Daily Goal Progress</h3>
+<div class="goal-chart-container">
+  <canvas id="goalChart" width="200" height="200"></canvas>
+  <div class="goal-text">{{ total_calories }} / {{ goal_calories }} kcal</div>
+</div>
+
+<style>
+  .goal-chart-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 20px auto;
+  }
+
+  .goal-chart-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .goal-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+  }
+</style>
+
+
+  
+
+  <!-- ✅ Performance Circle -->
+  <h3>🔥 Performance Overview</h3>
+  <div class="performance-chart-container">
+    <canvas id="performanceChart" width="200" height="200"></canvas>
+    <div class="performance-text">{{ performance_percentage }}%</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const weeklyLabels = JSON.parse('{{ weekly_labels|safe|escapejs }}');
+  const weeklyData = JSON.parse('{{ weekly_calories|safe|escapejs }}');
+
+  new Chart(document.getElementById('weeklyChart'), {
+    type: 'bar',
+    data: {
+      labels: weeklyLabels,
+      datasets: [{
+        label: 'Calories',
+        data: weeklyData,
+        backgroundColor: '#3498db',
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: 'Calories' }
+        }
+      }
+    }
+  });
+
+  const trendLabels = JSON.parse('{{ trend_labels|safe|escapejs }}');
+  const trendData = JSON.parse('{{ trend_data|safe|escapejs }}');
+
+  new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+      labels: trendLabels,
+      datasets: [{
+        label: 'Daily Calories',
+        data: trendData,
+        fill: true,
+        backgroundColor: 'rgba(46, 204, 113, 0.2)',
+        borderColor: '#2ecc71',
+        tension: 0.3
+      }]
+    },
+    options: { responsive: true }
+  });
+
+  const macros = JSON.parse('{{ today_macros|safe|escapejs }}');
+
+  new Chart(document.getElementById('macroChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Protein', 'Carbs', 'Fat'],
+      datasets: [{
+        data: [macros.protein, macros.carbs, macros.fat],
+        backgroundColor: ['#1abc9c', '#f39c12', '#e74c3c']
+      }]
+    },
+    options: { responsive: true }
+  });
+
+  new Chart(document.getElementById('macroRadarChart'), {
+    type: 'radar',
+    data: {
+      labels: ['Protein', 'Carbs', 'Fat'],
+      datasets: [{
+        label: 'Macronutrient Ratio',
+        data: [macros.protein, macros.carbs, macros.fat],
+        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+        borderColor: '#2980b9'
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { r: { beginAtZero: true } }
+    }
+  });
+
+  const goal = JSON.parse('{{ goal_calories|safe|escapejs }}');
+  const current = JSON.parse('{{ total_calories|safe|escapejs }}');
+
+  new Chart(document.getElementById('goalChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Consumed', 'Remaining'],
+      datasets: [{
+        data: [current, Math.max(goal - current, 0)],
+        backgroundColor: ['#2ecc71', '#ecf0f1']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      cutout: '70%'
+    }
+  });
+
+  // ✅ Performance Circle
+  const performanceValue = JSON.parse('{{ performance_percentage|safe|escapejs }}');
+
+  new Chart(document.getElementById('performanceChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Achieved', 'Remaining'],
+      datasets: [{
+        data: [performanceValue, Math.max(100 - performanceValue, 0)],
+        backgroundColor: ['#8e44ad', '#ecf0f1']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      cutout: '75%'
+    }
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const total = {{ total_calories }};
+    const goal = {{ goal_calories| default:2200 }};
+    const percent = Math.min((total / goal) * 100, 100);
+
+    const canvas = document.getElementById("goalChart");
+    const ctx = canvas.getContext("2d");
+    const radius = canvas.width / 2;
+    const lineWidth = 15;
+
+    // Background circle
+    ctx.beginPath();
+    ctx.arc(radius, radius, radius - lineWidth / 2, 0, 2 * Math.PI);
+    ctx.strokeStyle = "#eee";
+    ctx.lineWidth = lineWidth;
+    ctx.stroke();
+
+    // Progress circle
+    ctx.beginPath();
+    ctx.arc(
+      radius,
+      radius,
+      radius - lineWidth / 2,
+      -Math.PI / 2,
+      (-Math.PI / 2) + (2 * Math.PI * percent / 100)
+    );
+    ctx.strokeStyle = percent < 80 ? "#4caf50" : percent < 100 ? "#ffc107" : "#f44336";
+    ctx.lineWidth = lineWidth;
+    ctx.lineCap = "round";
+    ctx.stroke();
+  });
+</script>
+
+
+
+<style>
+  .goal-chart-container,
+  .performance-chart-container {
+    position: relative;
+    width: 200px;
+    margin: 0 auto;
+  }
+
+  .goal-text,
+  .performance-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    font-size: 18px;
+    color: #34495e;
+  }
+
+  .performance-text {
+    color: #8e44ad;
+  }
+
+  .food-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+
+  .date-filter-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .date-filter-form input[type="date"] {
+    padding: 5px;
+  }
+
+  .date-filter-form button {
+    padding: 6px 12px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .date-filter-form button:hover {
+    background-color: #27ae60;
+  }
+  .goal-chart-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 20px auto;
+}
+
+.goal-chart-container canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.goal-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+</style>
+{% endblock %}

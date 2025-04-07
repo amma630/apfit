@@ -1,0 +1,110 @@
+/* Profile Wrapper */
+.profile-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin: 50px auto;
+}
+
+/* Profile Box */
+.profile-box h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Form Styles */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.form-group {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #444;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #4facfe;
+    outline: none;
+    box-shadow: 0 0 8px rgba(79, 172, 254, 0.4);
+}
+
+/* Submit Button */
+button {
+    background: linear-gradient(to right, #4facfe, #00f2fe);
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+
+button:hover {
+    background: linear-gradient(to right, #00f2fe, #4facfe);
+    transform: scale(1.05);
+}
+
+/* Profile Info */
+.profile-info {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* Logout Button */
+.logout-btn {
+    display: block;
+    background: #ff4d4d;
+    color: #fff;
+    padding: 12px;
+    margin-top: 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.3s;
+    text-align: center;
+    width: 100%;
+}
+
+.logout-btn:hover {
+    background: #d93636;
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .profile-wrapper {
+        width: 90%;
+        padding: 20px;
+    }
+}

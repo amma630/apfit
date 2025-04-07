@@ -1,0 +1,59 @@
+{% extends "users/base.html" %}
+
+{% block title %}Human Tracker - AI Monitoring{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'home.css?45' %}">
+
+<div class="hero">
+    <div class="hero-content">
+        <h1 class="animate-text">Real-Time Human Tracking</h1>
+        <p>Experience the power of AI-driven monitoring and analytics.</p>
+        <a href="#" class="btn">Get Started</a>
+    </div>
+</div>
+
+
+<section class="features">
+    <div class="feature">
+        <img src="/static/images/ai-tracking.png" alt="AI Tracking">
+        <h2>AI-Powered Detection</h2>
+        <p>Our advanced algorithms accurately detect and track human movement in real-time.</p>
+    </div>
+
+    <div class="feature">
+        <img src="/static/images/security.png" alt="Security">
+        <h2>Enhanced Security</h2>
+        <p>Improve surveillance and security with automated alerts and tracking.</p>
+    </div>
+
+    <div class="feature">
+        <img src="/static/images/insights.png" alt="Data Insights">
+        <h2>Smart Insights</h2>
+        <p>Get detailed analytics on human behavior and movement patterns.</p>
+    </div>
+</section>
+
+<section class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+        <div class="step">
+            <span>1</span>
+            <h3>AI Detection</h3>
+            <p>Our AI-powered cameras analyze human movement instantly.</p>
+        </div>
+        <div class="step">
+            <span>2</span>
+            <h3>Real-Time Monitoring</h3>
+            <p>Track live activities with seamless data collection.</p>
+        </div>
+        <div class="step">
+            <span>3</span>
+            <h3>Data Insights</h3>
+            <p>Get meaningful analytics and security alerts.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

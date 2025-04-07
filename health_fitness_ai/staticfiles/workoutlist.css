@@ -1,0 +1,160 @@
+/* Global Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f4f8;
+  margin: 0;
+  padding: 1rem;
+  color: #2d3748;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: #1a202c;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #cbd5e0;
+  padding-bottom: 0.3rem;
+}
+
+h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Form Styles */
+form {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0 1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Buttons */
+button {
+  background-color: #4c51bf;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #434190;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+th, td {
+  padding: 1rem;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+thead {
+  background-color: #f7fafc;
+  font-weight: bold;
+}
+
+/* Cards: AI Tip & Diet Plan */
+.card {
+  padding: 1rem;
+  border-left: 6px solid;
+  border-radius: 10px;
+  margin-top: 1.5rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(to right, #f0fff4, #e6fffa);
+}
+
+.card-tip {
+  border-color: #9f7aea;
+  background: linear-gradient(to right, #ede9fe, #e0f2fe, #f0fff4);
+}
+
+.card-diet {
+  border-color: #38a169;
+  background-color: #f0fff4;
+}
+
+/* Images */
+img.rounded-full {
+  border-radius: 50%;
+  border: 3px solid #9f7aea;
+  box-shadow: 0 0 10px rgba(159, 122, 234, 0.3);
+}
+
+/* Lists */
+ul.list-disc {
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+li {
+  margin-bottom: 0.4rem;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 640px) {
+  form, table, .card {
+      padding: 1rem;
+      font-size: 0.95rem;
+  }
+
+  table thead {
+      display: none;
+  }
+
+  table, table tbody, table tr, table td {
+      display: block;
+      width: 100%;
+  }
+
+  table tr {
+      margin-bottom: 1rem;
+      background: #fff;
+      border-radius: 10px;
+      padding: 0.5rem;
+  }
+
+  table td {
+      text-align: left;
+      padding-left: 50%;
+      position: relative;
+  }
+
+  table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 1rem;
+      font-weight: bold;
+  }
+}

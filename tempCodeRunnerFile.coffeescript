@@ -1,0 +1,13 @@
+import requests
+api_key = 'biN2dEIYgmDFbIieDfka2jsh5xzSUvp2uYPp0r3W'  # Replace with your key
+query = "apple"
+
+url = f"https://api.nal.usda.gov/fdc/v1/foods/search?query={query}&api_key={api_key}"
+
+response = requests.get(url)
+
+if response.status_code == 200:
+    data = response.json()
+    print(data["foods"][0])  # Show first result
+else:
+    print("Error:", response.status_code, response.text)

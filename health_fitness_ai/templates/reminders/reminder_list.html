@@ -1,0 +1,8 @@
+<script>
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/reminders/');
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        alert("⏰ Reminder: " + data.message);
+    };
+</script>

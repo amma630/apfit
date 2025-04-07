@@ -1,0 +1,87 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Profile Info -->
+    <div class="profile-info">
+        <img src="{{ user.profile_picture }}" alt="Profile Picture" class="profile-picture">
+        <h3>{{ user.name }}</h3>
+        <p>Email: {{ user.email }}</p>
+        <p>Fitness Level: {{ user.fitness_level }}</p>
+        <a href="#">Update Profile</a>
+    </div>
+
+    <!-- Fitness Tracker -->
+    <div class="fitness-tracker">
+        <h4>Your Fitness Progress</h4>
+        <p>Steps Today: {{ user.steps_today }} steps</p>
+        <p>Calories Burned: {{ user.calories_burned }} kcal</p>
+        <div class="progress-bar">
+        </div>
+    </div>
+
+    <!-- Workouts -->
+    <div class="workouts">
+        <h4>Your Workout Plan</h4>
+        <ul>
+            {% for workout in user.workout %}
+                <li>
+                    <strong>{{ workout.name }}</strong>
+                    <p>{{ workout.description }}</p>
+                    <p>Duration: {{ workout.duration }} mins</p>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="#">View all workouts</a>
+    </div>
+
+    <!-- Diet Plan -->
+    <div class="diet-plan">
+        <h4>Your Daily Diet Plan</h4>
+        <ul>
+            {% for meal in user.daily_diet %}
+                <li>{{ meal.name }} - {{ meal.calories }} kcal</li>
+            {% endfor %}
+        </ul>
+        <p>Total Calories: {{ user.total_calories }}</p>
+    </div>
+
+    <!-- Health Tips -->
+    <div class="health-tips">
+        <h4>Health Tips</h4>
+        <ul>
+            {% for tip in health_tips %}
+                <li>{{ tip.text }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Notifications -->
+    <div class="notifications">
+        <h4>Notifications</h4>
+        <ul>
+            {% for notification in notifications %}
+                <li>{{ notification.message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Goals & Challenges -->
+    <div class="goals-challenges">
+        <h4>Your Goals</h4>
+        <ul>
+            {% for goal in user.goals %}
+                <li>{{ goal.name }} - {{ goal.status }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Logout and Settings -->
+    <div class="account-settings">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</div>
+
+{% endblock %}

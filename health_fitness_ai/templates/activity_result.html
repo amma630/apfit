@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>AI Recommendation for {{ activity.activity_name }}</h2>
+  <p><strong>Duration:</strong> {{ activity.duration }} minutes</p>
+  <pre>{{ activity.recommendation }}</pre>
+{% endblock %}

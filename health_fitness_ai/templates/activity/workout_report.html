@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Workout Report for {{ user.username }}</h2>
+
+    {% if chart %}
+        <img sr" alt="Workout Report">
+    {% else %}
+        <p>No workout data available.</p>
+    {% endif %}
+{% endblock %}

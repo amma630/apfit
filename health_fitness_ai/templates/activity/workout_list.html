@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <h2>Log Your Workout</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Log Workout</button>
+    </form>
+
+    <h3>Workout History:</h3>
+    <ul>
+        {% for workout in workouts %}
+            <li>
+                <strong>{{ workout.activity_type }}</strong> - {{ workout.duration }} min
+                - {{ workout.gap_taken }} min break - Burned: {{ workout.calories_burned }} cal
+                <br>
+                <img src="{% if workout.activity_type == 'running' %}/static/images/running.jpg{% endif %}" width="200">
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

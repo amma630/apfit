@@ -1,0 +1,10 @@
+{% extends 'users/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>❌ Invalid or Expired Link</h2>
+    <p>Oops! The verification link is invalid or has expired.</p>
+    <p>If you're having trouble, try registering again or contact support.</p>
+    <a href="{% url 'register' %}" class="btn btn-secondary">Go to Register</a>
+</div>
+{% endblock %}

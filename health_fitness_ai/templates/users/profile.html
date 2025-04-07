@@ -1,0 +1,97 @@
+{% extends "users/base.html" %}
+
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+<div class="profile-wrapper">
+    <div class="profile-card">
+        <h2>Hello, <span>{{ profile.user.username }}</span> 👋</h2>
+        <ul class="profile-data">
+            <li><label>Age:</label> <span>{{ profile.age }}</span></li>
+            <li><label>Height:</label> <span>{{ profile.height }} cm</span></li>
+            <li><label>Weight:</label> <span>{{ profile.weight }} kg</span></li>
+            <li><label>Fitness Goal:</label> <span>{{ profile.fitness_goal }}</span></li>
+        </ul>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+</div>
+
+<style>
+    body {
+        background: #f0f4f8;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+    }
+
+    .profile-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
+
+    .profile-card {
+        background: #ffffff;
+        padding: 40px 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .profile-card:hover {
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    }
+
+    .profile-card h2 {
+        font-size: 26px;
+        color: #00796b;
+        margin-bottom: 30px;
+    }
+
+    .profile-card h2 span {
+        color: #333;
+    }
+
+    .profile-data {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 30px;
+        text-align: left;
+    }
+
+    .profile-data li {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+        font-size: 16px;
+    }
+
+    .profile-data label {
+        font-weight: 600;
+        color: #555;
+    }
+
+    .profile-data span {
+        color: #111;
+    }
+
+    .logout-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background-color: #00796b;
+        color: #fff;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .logout-btn:hover {
+        background-color: #004d40;
+    }
+</style>
+{% endblock %}

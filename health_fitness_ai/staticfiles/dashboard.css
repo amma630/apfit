@@ -1,0 +1,247 @@
+/* Dashboard container */
+.dashboard-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #f4f6f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Info */
+.profile-info {
+    text-align: center;
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info img.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    object-fit: cover;
+}
+
+.profile-info h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.profile-info p {
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+.profile-info a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #3498db;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.profile-info a:hover {
+    text-decoration: underline;
+}
+
+/* Fitness Tracker */
+.fitness-tracker {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.fitness-tracker h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.progress-bar {
+    background-color: #e4e7ea;
+    border-radius: 8px;
+    height: 8px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.progress {
+    display: block;
+    background-color: #3498db;
+    height: 8px;
+    border-radius: 8px;
+}
+
+/* Workouts */
+.workouts {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.workouts h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.workouts ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.workouts li {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #34495e;
+}
+
+.workouts a {
+    display: inline-block;
+    margin-top: 15px;
+    color: #3498db;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.workouts a:hover {
+    text-decoration: underline;
+}
+
+/* Diet Plan */
+.diet-plan {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.diet-plan h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.diet-plan ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.diet-plan li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #34495e;
+}
+
+/* Health Tips */
+.health-tips {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.health-tips h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.health-tips ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.health-tips li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #34495e;
+}
+
+/* Notifications */
+.notifications {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.notifications h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.notifications ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.notifications li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #34495e;
+}
+
+/* Goals & Challenges */
+.goals-challenges {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.goals-challenges h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+.goals-challenges ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.goals-challenges li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #34495e;
+}
+
+/* Logout and Settings */
+.account-settings {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.account-settings a {
+    color: #e74c3c;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.account-settings a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,164 @@
+smartfitcompanion/
+├── manage.py
+├── db.sqlite3
+├── requirements.txt
+├── README.md
+
+├── smartfitcompanion/  ← Django project settings
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
+
+├── users/              ← User registration, login, profile
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── urls.py
+│   ├── views.py
+│   ├── templates/
+│   │   └── users/
+│   │       ├── login.html
+│   │       ├── register.html
+│   │       └── profile.html
+│   └── static/
+│       └── users/
+
+├── workouts/           ← Workout logs & statistics
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── urls.py
+│   ├── views.py
+│   ├── templates/
+│   │   └── workouts/
+│   │       ├── workout_list.html
+│   │       └── add_workout.html
+│   └── static/
+│       └── workouts/
+
+├── meals/              ← Meal logging with image/text support
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── urls.py
+│   ├── views.py
+│   ├── templates/
+│   │   └── meals/
+│   │       ├── meal_log.html
+│   │       └── add_meal.html
+│   └── static/
+│       └── meals/
+
+├── ai_chat/            ← AI-based chat coach (text/voice)
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── urls.py
+│   ├── views.py
+│   ├── templates/
+│   │   └── ai_chat/
+│   │       └── chat.html
+│   └── static/
+│       └── ai_chat/
+
+├── reminders/          ← Custom notifications and reminders
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── urls.py
+│   ├── views.py
+│   ├── templates/
+│   │   └── reminders/
+│   │       └── reminder_list.html
+│   └── static/
+│       └── reminders/
+
+├── templates/          ← Shared templates
+│   └── base.html       ← Global base template
+
+├── static/             ← Global static files (CSS, JS, images)
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── script.js
+│   └── images/
+│       └── logo.png
+
+└── media/              ← Uploaded files (meal images, etc.)
+    └── meals/
+
+
+
+
+project_root/
+│
+├── meals/
+│   ├── templates/
+│   │   └── meals/
+│   │       └── meal_log.html        ← 🍽️ Frontend template with voice support
+│   │
+│   ├── forms.py                     ← 📝 Django form for adding meals
+│   ├── models.py                    ← 🧠 Your MealLog model
+│   ├── views.py                     ← 🧠 Handles logic, AI text generation
+│   ├── urls.py                      ← 🔗 URLs for this app
+│   └── __init__.py
+│
+├── templates/
+│   └── base.html                    ← 🌐 Your main layout (extends base.html)
+│
+├── static/
+│   └── js/
+│       └── voice.js                 ← (Optional) external voice script
+│
+├── project_name/
+│   ├── settings.py                  ← 🔐 Add USDA/OPENAI keys here
+│   └── urls.py
+│
+├── manage.py
+└── db.sqlite3
+
+workouts/
+├── migrations/
+├── templates/
+│   └── workouts/
+│       └── workout_list.html
+├── static/
+│   └── css/
+│   └── js/
+├── forms.py
+├── models.py
+├── views.py
+├── urls.py
+├── utils/
+│   └── ai_recommendation.py
+
+supabase password
+Myuser@567
+
+
+
+project_root/
+│
+├── users/
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py         ← UserProfile model
+│   ├── views.py          ← Register, login, logout, email
+│   ├── forms.py
+│   ├── urls.py
+│   ├── supabase_client.py ← Supabase client setup
+│   ├── templates/
+│   │   └── users/
+│   │       ├── register.html
+│   │       ├── login.html
+│   │       ├── profile.html
+│   │       └── base.html
+│   └── static/
+│       └── users/
+│           └── style.css

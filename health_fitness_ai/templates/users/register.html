@@ -1,0 +1,91 @@
+{% extends "users/base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <h2>Create an Account</h2>
+    <form method="POST" enctype="multipart/form-data" class="register-form">
+        {% csrf_token %}
+    
+        <h4>Account Information</h4>
+        {{ user_form.non_field_errors }}
+        {% for field in user_form %}
+            <p>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <small style="color:red">{{ field.errors|join:", " }}</small>
+                {% endif %}
+            </p>
+        {% endfor %}
+    
+        <h4>Profile Details</h4>
+        {{ profile_form.non_field_errors }}
+        {% for field in profile_form %}
+            <p>
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <small style="color:red">{{ field.errors|join:", " }}</small>
+                {% endif %}
+            </p>
+        {% endfor %}
+    
+        <button type="submit">Register</button>
+    </form>
+    
+</div>
+
+<style>
+    .register-container {
+        max-width: 500px;
+        margin: 40px auto;
+        padding: 30px;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .register-container h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 20px;
+    }
+
+    .register-form h4 {
+        margin-top: 25px;
+        color: #34495e;
+    }
+
+    .register-form p {
+        margin-bottom: 15px;
+    }
+
+    .register-form input, 
+    .register-form select, 
+    .register-form textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+    }
+
+    .register-form button {
+        width: 100%;
+        padding: 12px;
+        background-color: #1abc9c;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .register-form button:hover {
+        background-color: #16a085;
+    }
+</style>
+{% endblock %}

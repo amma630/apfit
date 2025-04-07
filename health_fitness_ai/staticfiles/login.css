@@ -1,0 +1,142 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Login Wrapper */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+/* Glassmorphic Login Box */
+.login-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 350px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Smooth Fade-In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Title */
+h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Form Styling */
+.login-form .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+/* Input Fields */
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.login-form input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.login-form input:focus {
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.4);
+}
+
+/* Error Message */
+.error {
+    color: #ff4d4d;
+    font-size: 12px;
+}
+
+/* Stylish Submit Button */
+button {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.3);
+    transition: 0.3s;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.03);
+}
+
+/* Footer Text */
+.login-footer {
+    margin-top: 15px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.login-footer a {
+    color: #ffcc00;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive for Mobile */
+@media screen and (max-width: 400px) {
+    .login-box {
+        width: 90%;
+    }
+}

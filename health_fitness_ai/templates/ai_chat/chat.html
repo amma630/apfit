@@ -1,0 +1,30 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'ai_chat.css' %}">
+
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-8">
+    <h2 class="text-2xl font-semibold mb-4 text-green-700">🥦 USDA AI Nutrition Chat</h2>
+
+    <form method="post" class="flex gap-2 mb-4">
+        {% csrf_token %}
+        <input type="text" name="question" placeholder="Ask about a food item..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400">
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Ask</button>
+    </form>
+
+    <div class="chat-box bg-gray-50 p-4 rounded-lg max-h-[400px] overflow-y-auto">
+        {% for message in chat_history %}
+            <div class="mb-3">
+                <p class="font-semibold text-blue-600">You:</p>
+                <p class="ml-2">{{ message.question }}</p>
+
+                <p class="font-semibold text-purple-600 mt-2">AI:</p>
+                <p class="ml-2">{{ message.response }}</p>
+            </div>
+        {% empty %}
+            <p class="text-gray-500">No messages yet. Start chatting about nutrition! 🥗</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

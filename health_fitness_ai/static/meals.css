@@ -1,0 +1,103 @@
+.meal-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    color: #2c3e50;
+  }
+  
+  h2, h3, h4 {
+    color: #34495e;
+    margin-bottom: 15px;
+  }
+  
+  form {
+    margin-bottom: 30px;
+  }
+  
+  form button {
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #219150;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+  }
+  
+  .food-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 2px solid #ecf0f1;
+  }
+  
+  .meal-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+  
+  .meal-list li {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    transition: 0.3s ease;
+  }
+  
+  .meal-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .highlight {
+    color: #e67e22;
+    font-weight: bold;
+  }
+  
+  .goal-chart-container {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  
+  .goal-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    font-size: 20px;
+    color: #2c3e50;
+    text-align: center;
+  }
+  
+  canvas {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 10px;
+  }
+  

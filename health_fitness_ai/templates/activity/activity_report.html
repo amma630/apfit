@@ -1,0 +1,35 @@
+<h2>Activity Report</h2>
+
+{% if message %}
+  <p>{{ message }}</p>
+{% else %}
+  <div style="display: flex;">
+    <img src="/static/{{ activity_image }}" width="250" height="200" style="margin-right: 20px;" />
+    <div>
+      <p><strong>Activity:</strong> {{ latest.activity_name }}</p>
+      <p><strong>Duration:</strong> {{ latest.duration }} minutes</p>
+      <p><strong>Time Gap:</strong> {{ latest.gap }} minutes</p>
+      <p><strong>Date:</strong> {{ latest.date }}</p>
+      <h3>{{ recommendation_title }}</h3>
+      <p>{{ recommendation_detail }}</p>
+    </div>
+  </div>
+
+  <h3>Performance Chart</h3>
+  <img src="/media/{{ graph }}" width="500" />
+
+  <h3>Activity History</h3>
+  <table border="1" cellpadding="5">
+    <tr>
+      <th>Date</th><th>Activity</th><th>Duration</th><th>Gap</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+      <td>{{ log.date|date:"Y-m-d H:i" }}</td>
+      <td>{{ log.activity_name }}</td>
+      <td>{{ log.duration }}</td>
+      <td>{{ log.gap }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endif %}

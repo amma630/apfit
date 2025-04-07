@@ -1,0 +1,37 @@
+import requests
+API_KEY = 'biN2dEIYgmDFbIieDfka2jsh5xzSUvp2uYPp0r3W'  # Replace with your key
+def get_food_nutrients(food_name):
+    # Search for the food
+    search_url = "https://api.nal.usda.gov/fdc/v1/foods/search"
+    params = {
+        "query": food_name,
+        "pageSize": 1,
+        "api_key": API_KEY
+    }
+    response = requests.get(search_url, params=params)
+    data = response.json()
+
+    if "foods" not in data or not data["foods"]:
+        print("No results found.")
+        return
+
+    fdc_id = data["foods"][0]["fdcId"]
+
+    # Get detailed nutrition
+    detail_url = f"https://api.nal.usda.gov/fdc/v1/food/{fdc_id}"
+    params = {
+        "api_key": API_KEY
+    }
+    detail_response = requests.get(detail_url, params=params)
+    detail_data = detail_response.json()
+
+    print(f"\n🔍 {food_name.upper()} - Nutrients:")
+    for nutrient in detail_data.get("foodNutrients", []):
+        name = nutrient.get("nutrient", {}).get("name")  # Updated structure
+        amount = nutrient.get("amount")
+        unit = nutrient.get("nutrient", {}).get("unitName")
+        if name and amount and unit:
+            print(f"{name}: {amount} {unit}")
+
+# Test with example
+get_food_nutrients("egg")
