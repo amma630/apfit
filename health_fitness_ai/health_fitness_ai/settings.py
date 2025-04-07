@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'workouts',
     'meals',
     'ai_chat',
-    'remainders',
+
      'channels',
     'notifications',
     

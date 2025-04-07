@@ -3,47 +3,21 @@ from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm, UserProfileForm
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
-
-from .forms import RegisterForm
-
-from django.contrib.auth.models import User
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
-from django.conf import settings
-from .forms import RegisterForm
-
-from django.core.mail import send_mail
-from django.conf import settings
-from django.core.signing import Signer, BadSignature
-from django.urls import reverse
-
-
-# Register view with email verification
-from .forms import RegisterForm, UserProfileForm
-from .models import UserProfile
-from django.contrib.auth.models import User
+from django.contrib import messages
 from django.core.mail import send_mail
 from django.core.signing import Signer
 from django.urls import reverse
 from django.conf import settings
-from django.shortcuts import render, redirect
-
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
+from django.contrib.auth import get_user_model
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth import get_user_model
-from django.urls import reverse
-from django.conf import settings
-from django.core.signing import Signer
-from .forms import RegisterForm, UserProfileForm
+from django.contrib.auth.models import User
 
+# Register view with email verification
 def register_view(request):
     if request.method == "POST":
         user_form = RegisterForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+        profile_form = UserProfileForm(request.POST, request.FILES)
 
         if user_form.is_valid() and profile_form.is_valid():
             email = user_form.cleaned_data['email']
@@ -90,7 +64,6 @@ def register_view(request):
         "profile_form": profile_form
     })
 
-
 # Email confirmation view
 def verify_email(request):
     # Retrieve the token from the query parameter
@@ -122,10 +95,8 @@ def verify_email(request):
 
     except (BadSignature, User.DoesNotExist):
         return render(request, 'users/invalid_token.html')
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-from django.contrib import messages
 
+# Login view
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -143,36 +114,42 @@ def login_view(request):
             messages.error(request, "Invalid username or password.")
             return redirect('login')  # Redirect back to login page
 
-    return render(request, 'users/login.html')  
+    return render(request, 'users/login.html')
+
+# Logout view
 @login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+# Profile view
 @login_required
 def profile_view(request):
     profile, created = UserProfile.objects.get_or_create(user=request.user)
     return render(request, 'users/profile.html', {'profile': profile})
 
+# Dashboard view
 @login_required
 def dashboard_view(request):
     return render(request, 'dashboard.html')  # or any relevant template
+
+# Home view
 def home_view(request):
     return render(request, 'users/home.html')
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+# Notify user signup using Supabase (example feature)
 from .supabase_client import supabase
-from .utils import send_signup_notification
 
 @login_required
 def notify_user_signup(request):
-    email = request.user.email  # 👈 Get email from logged-in user
+    email = request.user.email  # Get email from logged-in user
 
     data = {
         "email": email,
         "message": "Welcome to your fitness coach platform!"
     }
 
+    # Insert notification data into Supabase
     supabase.table("notifications").insert(data).execute()
 
     return render(request, 'users/email_sent.html')
