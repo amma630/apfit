@@ -5,36 +5,47 @@
   <meta charset="UTF-8">
   <title>{% block title %}Health & Fitness AI{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <!-- Tailwind CSS CDN -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Lottie Files -->
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
+  <!-- Static CSS -->
+  <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'base.css' %}">
+
+  <!-- Hamburger Animation Style -->
   <style>
-    .notification-bell.ring::after {
-      content: '';
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      width: 10px;
-      height: 10px;
-      background-color: red;
-      border-radius: 50%;
-      animation: pulse 1s infinite;
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      margin: 5px auto;
+      transition: all 0.3s ease-in-out;
+      background-color: white;
     }
 
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
+    .hamburger.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
     }
 
     .fade-in {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
     .fade-in.show {
@@ -42,112 +53,183 @@
       transform: translateY(0);
     }
   </style>
+
+  <!-- Hamburger Toggle Script -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.getElementById('hamburger');
+      menu.classList.toggle('max-h-0');
+      menu.classList.toggle('max-h-screen');
+      hamburger.classList.toggle('open');
+    }
+
+    function playNotifSound() {
+      const audio = document.getElementById('notif-sound');
+      if (audio) {
+        audio.play().catch(err => console.warn('Autoplay blocked or error:', err));
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const content = document.getElementById("main-content");
+      if (content) {
+        setTimeout(() => {
+          content.classList.add("show");
+        }, 200);
+      }
+
+      const hasNewNotif = document.body.dataset.hasNew === 'true';
+      if (hasNewNotif) {
+        playNotifSound();
+      }
+    });
+    const bell = document.querySelector('.notification-bell');
+
+function triggerBellRing() {
+  if (!bell) return;
+  bell.classList.add('ring');
+
+  // Remove the ring class after animation duration (e.g., 1s)
+  setTimeout(() => {
+    bell.classList.remove('ring');
+  }, 1000);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const content = document.getElementById("main-content");
+  if (content) {
+    setTimeout(() => content.classList.add("show"), 200);
+  }
+
+  const hasNewNotif = document.body.dataset.hasNew === 'true';
+  if (hasNewNotif) {
+    playNotifSound();
+    triggerBellRing();  // only animate once on load
+  }
+});
+
+
+  </script>
 </head>
 
-<!-- Pass `has_new_notifications` safely using data-* -->
 <body class="bg-gray-100 text-gray-900" data-has-new="{{ has_new_notifications|yesno:'true,false' }}">
+  <!-- Header -->
+  <header class="fixed top-0 w-full z-50 bg-gray-900 text-white shadow-md">
+    <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
+      <a href="/" class="text-2xl font-bold tracking-wide hover:text-green-400 transition">
+        Health & Fitness AI
+      </a>
 
-<!-- Header -->
-<header class="fixed top-0 w-full z-50 bg-gray-900 text-white shadow-md">
-  <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
-    <a href="/" class="text-2xl font-bold tracking-wide hover:text-green-400 transition">Health & Fitness AI</a>
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex space-x-6 items-center">
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+          <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+          <a href="{% url 'meal_log' %}" class="nav-link">Meal Log</a>
+          <a href="{% url 'ai_chat:chat' %}" class="nav-link">AI Chat</a>
+          <a href="{% url 'workout_list' %}" class="nav-link">Workout Log</a>
+          <a href="{% url 'notification_list' %}" 
+   class="notification-bell relative {% if has_new_notifications %}has-notification{% endif %}">
+   <i class="fas fa-bell text-lg"></i>
+</a>
 
-    <nav class="hidden md:flex space-x-6 items-center">
-      {% if user.is_authenticated %}
-        <a href="{% url 'dashboard' %}" class="hover:text-green-400">Dashboard</a>
-        <a href="{% url 'profile' %}" class="hover:text-green-400">Profile</a>
-        <a href="{% url 'meal_log' %}" class="hover:text-green-400">Meal Log</a>
-        <a href="{% url 'ai_chat:chat' %}" class="hover:text-green-400">AI Chat</a>
-        <a href="{% url 'workout_list' %}" class="hover:text-green-400">Workout Log</a>
-        <a href="{% url 'logout' %}" class="hover:text-red-400">Logout</a>
-        <a href="{% url 'notification_list' %}" class="relative notification-bell {% if has_new_notifications %}ring{% endif %}">
-          <i class="fas fa-bell text-lg"></i>
-        </a>
-      {% else %}
-        <a href="{% url 'home' %}" class="hover:text-green-400">Home</a>
-        <a href="{% url 'login' %}" class="hover:text-blue-400">Login</a>
-        <a href="{% url 'register' %}" class="hover:text-green-400">Register</a>
-      {% endif %}
-    </nav>
+          
+          <a href="{% url 'logout' %}" class="hover:text-red-400">Logout</a>
+        {% else %}
+          <a href="{% url 'home' %}" class="nav-link">Home</a>
+          <a href="{% url 'login' %}" class="nav-link text-blue-400">Login</a>
+          <a href="{% url 'register' %}" class="nav-link text-green-400">Register</a>
+        {% endif %}
+      </nav>
 
-    <!-- Mobile menu toggle -->
-    <div class="md:hidden flex flex-col gap-1 cursor-pointer" onclick="toggleMenu()">
-      <span class="w-6 h-0.5 bg-white"></span>
-      <span class="w-6 h-0.5 bg-white"></span>
-      <span class="w-6 h-0.5 bg-white"></span>
+      <!-- Mobile Hamburger -->
+      <div class="md:hidden z-50 cursor-pointer" onclick="toggleMenu()">
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="md:hidden absolute top-full left-0 w-full bg-gray-800 overflow-hidden max-h-0 transition-all duration-500 ease-in-out">
+      <div class="flex flex-col px-6 py-4 space-y-4">
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">Dashboard</a>
+          <a href="{% url 'profile' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">Profile</a>
+          <a href="{% url 'meal_log' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">Meal Log</a>
+          <a href="{% url 'ai_chat:chat' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">AI Chat</a>
+          <a href="{% url 'workout_list' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">Workout Log</a>
+          <a href="{% url 'notification_list' %}" 
+   class="hover:text-green-400 nav-link flex items-center justify-start" 
+   onclick="toggleMenu()">
+   <i class="fas fa-bell text-lg mr-2"></i>
+</a>
+
+          <a href="{% url 'logout' %}" class="hover:text-red-400" onclick="toggleMenu()">Logout</a>
+        {% else %}
+          <a href="{% url 'home' %}" class="nav-link" onclick="toggleMenu()">Home</a>
+          <a href="{% url 'login' %}" class="nav-link text-blue-400" onclick="toggleMenu()">Login</a>
+          <a href="{% url 'register' %}" class="nav-link text-green-400" onclick="toggleMenu()">Register</a>
+        {% endif %}
+      </div>
+    </div>
+    <audio id="notif-sound" src="{% static 'images/notify.mp3' %}" preload="auto"></audio>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 py-28 fade-in" id="main-content">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <!-- Wavy SVG Edge -->
+<div class="footer-wave">
+  <svg viewBox="0 0 1440 150" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#111827" d="M0,96L80,112C160,128,320,160,480,149.3C640,139,800,85,960,85.3C1120,85,1280,139,1360,165.3L1440,192L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z" />
+  </svg>
+</div>
+
+<!-- Stylish Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-column">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Resources</h4>
+      <ul>
+        <li><a href="#">Docs</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">API</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-column">
+      <h4>Connect</h4>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
     </div>
   </div>
 
-  <!-- Mobile Nav -->
-  <div id="navLinks" class="md:hidden hidden flex-col bg-gray-800 px-4 py-2 space-y-2">
-    {% if user.is_authenticated %}
-      <a href="{% url 'dashboard' %}" class="hover:text-green-400">Dashboard</a>
-      <a href="{% url 'profile' %}" class="hover:text-green-400">Profile</a>
-      <a href="{% url 'meal_log' %}" class="hover:text-green-400">Meal Log</a>
-      <a href="{% url 'ai_chat:chat' %}" class="hover:text-green-400">AI Chat</a>
-      <a href="{% url 'workout_list' %}" class="hover:text-green-400">Workout Log</a>
-      <a href="{% url 'logout' %}" class="hover:text-red-400">Logout</a>
-    {% else %}
-      <a href="{% url 'home' %}" class="hover:text-green-400">Home</a>
-      <a href="{% url 'login' %}" class="hover:text-blue-400">Login</a>
-      <a href="{% url 'register' %}" class="hover:text-green-400">Register</a>
-    {% endif %}
-  </div>
-
-  <!-- Notification Sound -->
-  <audio id="notif-sound" src="{% static 'images/notify.mp3' %}" preload="auto"></audio>
-</header>
-
-<!-- Main Content -->
-<main class="max-w-7xl mx-auto px-4 py-28 fade-in" id="main-content">
-  {% block content %}
-  <!-- Page-specific content goes here -->
-  {% endblock %}
-</main>
-
-<!-- Footer -->
-<footer class="bg-gray-900 text-white py-6 mt-12">
-  <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-4">
-    <p class="text-sm">&copy; 2025 Health & Fitness AI. All rights reserved.</p>
-    <div class="flex space-x-4 mt-3 md:mt-0">
-      <a href="#" class="hover:text-blue-400"><i class="fab fa-facebook-f"></i></a>
-      <a href="#" class="hover:text-pink-400"><i class="fab fa-instagram"></i></a>
-      <a href="#" class="hover:text-sky-400"><i class="fab fa-twitter"></i></a>
-    </div>
+  <div class="footer-bottom">
+    &copy; 2025 <span class="brand">BrainBunny</span>. All rights reserved.
   </div>
 </footer>
 
-<!-- Scripts -->
-<script>
-  function toggleMenu() {
-    document.getElementById('navLinks').classList.toggle('hidden');
-  }
-
-  function playNotifSound() {
-    const audio = document.getElementById('notif-sound');
-    if (audio) {
-      audio.play().catch(err => {
-        console.warn('Autoplay blocked or error:', err);
-      });
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    // Fade-in effect
-    const content = document.getElementById("main-content");
-    if (content) {
-      setTimeout(() => {
-        content.classList.add("show");
-      }, 200);
-    }
-
-    // Play notification if needed (from body data attr)
-    const hasNewNotif = document.body.dataset.hasNew === 'true';
-    if (hasNewNotif) {
-      playNotifSound();
-    }
-  });
-</script>
-
+  
 </body>
 </html>
