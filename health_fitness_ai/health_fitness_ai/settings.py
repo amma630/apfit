@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ai_chat',
     'channels',
     'notifications',
+    'django.contrib.humanize',
     
 ]
 

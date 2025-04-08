@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import MealLog
 from .forms import MealLogForm
+from notifications.models import Notification  # to create notifications
+from django.core.mail import send_mail         # to send email
+
 
 # Constants
 CALORIE_MIN = 1200
@@ -77,6 +80,17 @@ def meal_log_view(request):
                 meal.carbs = nutrition['carbs']
                 meal.fat = nutrition['fat']
             meal.save()
+            Notification.objects.create(
+                user=request.user,
+                message=f"You added {meal.food_name} with {meal.total_calories} kcal to your meal log."
+            )
+            send_mail(
+                subject='🍽️ Meal Added - Nutrition Tracker',
+                message=f"Hey {request.user.username},\n\nYou just logged a meal: {meal.food_name} with {meal.total_calories} kcal.\nKeep tracking your nutrition!",
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[request.user.email],
+                fail_silently=True  # Or False to debug
+            )
             return redirect('meal_log')
     else:
         form = MealLogForm()
