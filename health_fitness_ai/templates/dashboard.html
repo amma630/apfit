@@ -3,85 +3,114 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="dashboard-container">
+<div class="container mx-auto px-6 py-10">
     <!-- Profile Info -->
-    <div class="profile-info">
-        <img src="{{ user.profile_picture }}" alt="Profile Picture" class="profile-picture">
-        <h3>{{ user.name }}</h3>
-        <p>Email: {{ user.email }}</p>
-        <p>Fitness Level: {{ user.fitness_level }}</p>
-        <a href="#">Update Profile</a>
-    </div>
-
-    <!-- Fitness Tracker -->
-    <div class="fitness-tracker">
-        <h4>Your Fitness Progress</h4>
-        <p>Steps Today: {{ user.steps_today }} steps</p>
-        <p>Calories Burned: {{ user.calories_burned }} kcal</p>
-        <div class="progress-bar">
+    <div class="bg-white rounded-xl shadow p-6 flex items-center gap-6 mb-8">
+                {% load static %}
+                <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static 'avatar.png' %}{% endif %}" class="h-14 w-14 rounded-full border-2 border-green-400 shadow-lg" alt="Avatar">
+            
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">{{ user.username }}</h2>
+            <p class="text-sm text-gray-600">{{ user.email }}</p>
+            <p class="text-sm text-green-500 mt-1">Fitness Level: {{ user.profile.fitness_goal }}</p>
+            <a href="#" class="inline-block mt-2 text-blue-500 hover:underline">Update Profile</a>
         </div>
     </div>
 
-    <!-- Workouts -->
-    <div class="workouts">
-        <h4>Your Workout Plan</h4>
-        <ul>
+    <!-- Fitness Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-green-100 rounded-lg p-4 shadow">
+            <h4 class="font-semibold text-lg">Steps Today</h4>
+            <p class="text-2xl font-bold text-green-700">{{ user.profile.steps_today|default:0 }} steps</p>
+        </div>
+        <div class="bg-red-100 rounded-lg p-4 shadow">
+            <h4 class="font-semibold text-lg">Calories Burned</h4>
+            <p class="text-2xl font-bold text-red-700">{{ user.profile.calories_burned|default:0 }} kcal</p>
+        </div>
+        <div class="bg-blue-100 rounded-lg p-4 shadow">
+            <h4 class="font-semibold text-lg">Total Calories</h4>
+            <p class="text-2xl font-bold text-blue-700">{{ user.profile.total_calories|default:0 }} kcal</p>
+        </div>
+    </div>
+
+    <!-- Workout Plan -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Workout Plan</h3>
+        {% if user.workout %}
+        <ul class="space-y-4">
             {% for workout in user.workout %}
-                <li>
-                    <strong>{{ workout.name }}</strong>
-                    <p>{{ workout.description }}</p>
-                    <p>Duration: {{ workout.duration }} mins</p>
-                </li>
+            <li class="border-b pb-2">
+                <h4 class="font-semibold">{{ workout.name }}</h4>
+                <p class="text-sm text-gray-600">{{ workout.description }}</p>
+                <p class="text-xs text-gray-500">Duration: {{ workout.duration }} mins</p>
+            </li>
             {% endfor %}
         </ul>
-        <a href="#">View all workouts</a>
+        {% else %}
+        <p class="text-sm text-gray-500">No workouts assigned.</p>
+        {% endif %}
+        <a href="#" class="block mt-4 text-blue-600 hover:underline text-sm">View all workouts</a>
     </div>
 
     <!-- Diet Plan -->
-    <div class="diet-plan">
-        <h4>Your Daily Diet Plan</h4>
-        <ul>
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Daily Diet Plan</h3>
+        {% if user.daily_diet %}
+        <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
             {% for meal in user.daily_diet %}
-                <li>{{ meal.name }} - {{ meal.calories }} kcal</li>
+            <li>{{ meal.name }} - {{ meal.calories }} kcal</li>
             {% endfor %}
         </ul>
-        <p>Total Calories: {{ user.total_calories }}</p>
+        {% else %}
+        <p class="text-sm text-gray-500">No diet plan assigned.</p>
+        {% endif %}
     </div>
 
     <!-- Health Tips -->
-    <div class="health-tips">
-        <h4>Health Tips</h4>
-        <ul>
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Health Tips</h3>
+        {% if health_tips %}
+        <ul class="list-disc pl-5 text-sm text-gray-700 space-y-2">
             {% for tip in health_tips %}
                 <li>{{ tip.text }}</li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="text-sm text-gray-500">No health tips today.</p>
+        {% endif %}
     </div>
 
     <!-- Notifications -->
-    <div class="notifications">
-        <h4>Notifications</h4>
-        <ul>
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Notifications</h3>
+        {% if notifications %}
+        <ul class="text-sm space-y-2 text-gray-700">
             {% for notification in notifications %}
                 <li>{{ notification.message }}</li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="text-sm text-gray-500">You're all caught up!</p>
+        {% endif %}
     </div>
 
     <!-- Goals & Challenges -->
-    <div class="goals-challenges">
-        <h4>Your Goals</h4>
-        <ul>
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Your Goals</h3>
+        {% if user.goals %}
+        <ul class="space-y-2 text-sm text-gray-700">
             {% for goal in user.goals %}
-                <li>{{ goal.name }} - {{ goal.status }}</li>
+                <li>{{ goal.name }} - <span class="text-green-500">{{ goal.status }}</span></li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="text-sm text-gray-500">Set your fitness goals today!</p>
+        {% endif %}
     </div>
 
-    <!-- Logout and Settings -->
-    <div class="account-settings">
-        <a href="{% url 'logout' %}">Logout</a>
+    <!-- Logout -->
+    <div class="text-right">
+        <a href="{% url 'logout' %}" class="text-red-500 hover:underline text-sm">Logout</a>
     </div>
 </div>
-
 {% endblock %}

@@ -3,95 +3,83 @@
 {% block title %}Your Profile{% endblock %}
 
 {% block content %}
-<div class="profile-wrapper">
-    <div class="profile-card">
-        <h2>Hello, <span>{{ profile.user.username }}</span> 👋</h2>
-        <ul class="profile-data">
-            <li><label>Age:</label> <span>{{ profile.age }}</span></li>
-            <li><label>Height:</label> <span>{{ profile.height }} cm</span></li>
-            <li><label>Weight:</label> <span>{{ profile.weight }} kg</span></li>
-            <li><label>Fitness Goal:</label> <span>{{ profile.fitness_goal }}</span></li>
-        </ul>
-        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-    </div>
+<div class="flex h-auto min-h-screen bg-gradient-to-r from-green-100 via-white to-blue-100 p-6">
+    <main class="flex-1 max-w-6xl mx-auto">
+        <!-- Profile Header -->
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800">Welcome back, {{ profile.user.username }} 👋</h2>
+                <p class="text-sm text-gray-600">{{ profile.user.email }}</p>
+            </div>
+            <div class="flex items-center space-x-4">
+                {% load static %}
+                <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static 'avatar.png' %}{% endif %}" class="h-14 w-14 rounded-full border-2 border-green-400 shadow-lg" alt="Avatar">
+            </div>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300">
+                <div class="text-center">
+                    <img src="{% if profile.profile_picture %}{{ profile.profile_picture.url }}{% else %}{% static 'avatar.png' %}{% endif %}" class="h-24 w-24 mx-auto rounded-full mb-4 border-4 border-green-500">
+                    <h3 class="text-xl font-semibold">{{ profile.user.get_full_name|default:profile.user.username }}</h3>
+                    <p class="text-gray-500 text-sm mt-1">Fitness Enthusiast 💪</p>
+                </div>
+                <div class="mt-4 space-y-2 text-sm">
+                    
+                    
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-600">Height:</span><span>{{ profile.height }} cm</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-600">Weight:</span><span>{{ profile.weight }} kg</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="font-medium text-gray-600">Goal:</span><span>{{ profile.fitness_goal }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Animated Trainer -->
+            <div class="col-span-1 md:col-span-2 flex items-center justify-center">
+                <lottie-player
+                    src="https://assets9.lottiefiles.com/packages/lf20_q8qzfysh.json"
+                    background="transparent"
+                    speed="1"
+                    style="width: 300px; height: 300px;"
+                    loop autoplay>
+                </lottie-player>
+            </div>
+        </div>
+
+        <!-- Fitness Progress -->
+        
+          
+        <!-- Recent Workouts -->
+        <div class="mt-10">
+            <h4 class="text-xl font-semibold mb-4">Recent Workouts</h4>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gradient-to-r from-green-300 to-green-500 p-4 rounded-lg shadow">
+                    <div class="flex items-center space-x-4">
+                        <img src="{% static 'yoga.png' %}" class="h-12" alt="">
+                        <div>
+                            <p class="text-white font-semibold">Full Body Yoga</p>
+                            <p class="text-white/70 text-sm">08:30 - 09:15</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-blue-300 to-blue-500 p-4 rounded-lg shadow">
+                    <div class="flex items-center space-x-4">
+                        <img src="{% static 'training.png' %}" class="h-12" alt="">
+                        <div>
+                            <p class="text-white font-semibold">Functional Training</p>
+                            <p class="text-white/70 text-sm">09:30 - 10:15</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </div>
 
-<style>
-    body {
-        background: #f0f4f8;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        color: #333;
-    }
-
-    .profile-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 80vh;
-    }
-
-    .profile-card {
-        background: #ffffff;
-        padding: 40px 30px;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 500px;
-        text-align: center;
-        transition: all 0.3s ease-in-out;
-    }
-
-    .profile-card:hover {
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
-    }
-
-    .profile-card h2 {
-        font-size: 26px;
-        color: #00796b;
-        margin-bottom: 30px;
-    }
-
-    .profile-card h2 span {
-        color: #333;
-    }
-
-    .profile-data {
-        list-style: none;
-        padding: 0;
-        margin: 0 0 30px;
-        text-align: left;
-    }
-
-    .profile-data li {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 0;
-        border-bottom: 1px solid #eee;
-        font-size: 16px;
-    }
-
-    .profile-data label {
-        font-weight: 600;
-        color: #555;
-    }
-
-    .profile-data span {
-        color: #111;
-    }
-
-    .logout-btn {
-        display: inline-block;
-        padding: 12px 24px;
-        background-color: #00796b;
-        color: #fff;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-
-    .logout-btn:hover {
-        background-color: #004d40;
-    }
-</style>
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import RegisterForm, UserProfileForm
+from django.core.signing import Signer, BadSignature
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -131,7 +132,8 @@ def profile_view(request):
 # Dashboard view
 @login_required
 def dashboard_view(request):
-    return render(request, 'dashboard.html')  # or any relevant template
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    return render(request, 'dashboard.html', {'profile': profile})  # or any relevant template
 
 # Home view
 def home_view(request):
@@ -153,3 +155,5 @@ def notify_user_signup(request):
     supabase.table("notifications").insert(data).execute()
 
     return render(request, 'users/email_sent.html')
+def loader_view(request):
+    return render(request, 'users/loader.html')
