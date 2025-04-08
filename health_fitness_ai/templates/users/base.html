@@ -1,10 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}Health & Fitness AI{% endblock %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% load static %}
+  
+  <!-- Tailwind CSS CDN -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'dashboard.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -14,12 +16,19 @@
     .notification-bell.ring::after {
       content: '';
       position: absolute;
-      top: -4px;
-      right: -4px;
+      top: -5px;
+      right: -5px;
       width: 10px;
       height: 10px;
       background-color: red;
       border-radius: 50%;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
     }
 
     .fade-in {
@@ -33,15 +42,16 @@
       transform: translateY(0);
     }
   </style>
-  
-
 </head>
-<body class="bg-gray-50 text-gray-800">
+
+<!-- Pass `has_new_notifications` safely using data-* -->
+<body class="bg-gray-100 text-gray-900" data-has-new="{{ has_new_notifications|yesno:'true,false' }}">
 
 <!-- Header -->
-<header class="fixed top-0 w-full z-50 bg-gray-900 text-white shadow-lg transition duration-300 ease-in-out">
+<header class="fixed top-0 w-full z-50 bg-gray-900 text-white shadow-md">
   <div class="max-w-7xl mx-auto flex justify-between items-center px-4 py-4">
     <a href="/" class="text-2xl font-bold tracking-wide hover:text-green-400 transition">Health & Fitness AI</a>
+
     <nav class="hidden md:flex space-x-6 items-center">
       {% if user.is_authenticated %}
         <a href="{% url 'dashboard' %}" class="hover:text-green-400">Dashboard</a>
@@ -51,7 +61,7 @@
         <a href="{% url 'workout_list' %}" class="hover:text-green-400">Workout Log</a>
         <a href="{% url 'logout' %}" class="hover:text-red-400">Logout</a>
         <a href="{% url 'notification_list' %}" class="relative notification-bell {% if has_new_notifications %}ring{% endif %}">
-          <i class="fas fa-bell"></i>
+          <i class="fas fa-bell text-lg"></i>
         </a>
       {% else %}
         <a href="{% url 'home' %}" class="hover:text-green-400">Home</a>
@@ -60,7 +70,7 @@
       {% endif %}
     </nav>
 
-    <!-- Mobile Hamburger -->
+    <!-- Mobile menu toggle -->
     <div class="md:hidden flex flex-col gap-1 cursor-pointer" onclick="toggleMenu()">
       <span class="w-6 h-0.5 bg-white"></span>
       <span class="w-6 h-0.5 bg-white"></span>
@@ -68,32 +78,35 @@
     </div>
   </div>
 
-  <!-- Mobile Navigation -->
+  <!-- Mobile Nav -->
   <div id="navLinks" class="md:hidden hidden flex-col bg-gray-800 px-4 py-2 space-y-2">
     {% if user.is_authenticated %}
-      <a href="{% url 'dashboard' %}">Dashboard</a>
-      <a href="{% url 'profile' %}">Profile</a>
-      <a href="{% url 'meal_log' %}">Meal Log</a>
-      <a href="{% url 'ai_chat:chat' %}">AI Chat</a>
-      <a href="{% url 'workout_list' %}">Workout Log</a>
-      <a href="{% url 'logout' %}">Logout</a>
+      <a href="{% url 'dashboard' %}" class="hover:text-green-400">Dashboard</a>
+      <a href="{% url 'profile' %}" class="hover:text-green-400">Profile</a>
+      <a href="{% url 'meal_log' %}" class="hover:text-green-400">Meal Log</a>
+      <a href="{% url 'ai_chat:chat' %}" class="hover:text-green-400">AI Chat</a>
+      <a href="{% url 'workout_list' %}" class="hover:text-green-400">Workout Log</a>
+      <a href="{% url 'logout' %}" class="hover:text-red-400">Logout</a>
     {% else %}
-      <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'login' %}">Login</a>
-      <a href="{% url 'register' %}">Register</a>
+      <a href="{% url 'home' %}" class="hover:text-green-400">Home</a>
+      <a href="{% url 'login' %}" class="hover:text-blue-400">Login</a>
+      <a href="{% url 'register' %}" class="hover:text-green-400">Register</a>
     {% endif %}
   </div>
 
+  <!-- Notification Sound -->
   <audio id="notif-sound" src="{% static 'images/notify.mp3' %}" preload="auto"></audio>
 </header>
 
 <!-- Main Content -->
-<main id="main-content" class="container mx-auto px-4 py-28 fade-in">
-  {% block content %}{% endblock %}
+<main class="max-w-7xl mx-auto px-4 py-28 fade-in" id="main-content">
+  {% block content %}
+  <!-- Page-specific content goes here -->
+  {% endblock %}
 </main>
 
 <!-- Footer -->
-<footer class="bg-gray-900 text-white py-6">
+<footer class="bg-gray-900 text-white py-6 mt-12">
   <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center px-4">
     <p class="text-sm">&copy; 2025 Health & Fitness AI. All rights reserved.</p>
     <div class="flex space-x-4 mt-3 md:mt-0">
@@ -107,22 +120,32 @@
 <!-- Scripts -->
 <script>
   function toggleMenu() {
-    const navLinks = document.getElementById('navLinks');
-    navLinks.classList.toggle('hidden');
+    document.getElementById('navLinks').classList.toggle('hidden');
   }
 
   function playNotifSound() {
     const audio = document.getElementById('notif-sound');
     if (audio) {
-      audio.play().catch((e) => {
-        console.log('Audio play was prevented:', e);
+      audio.play().catch(err => {
+        console.warn('Autoplay blocked or error:', err);
       });
     }
   }
 
-  // Initial Page Fade-In Effect
-  window.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('main-content').classList.add('show');
+  document.addEventListener('DOMContentLoaded', () => {
+    // Fade-in effect
+    const content = document.getElementById("main-content");
+    if (content) {
+      setTimeout(() => {
+        content.classList.add("show");
+      }, 200);
+    }
+
+    // Play notification if needed (from body data attr)
+    const hasNewNotif = document.body.dataset.hasNew === 'true';
+    if (hasNewNotif) {
+      playNotifSound();
+    }
   });
 </script>
 
