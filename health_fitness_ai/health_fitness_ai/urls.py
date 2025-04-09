@@ -25,6 +25,7 @@ urlpatterns = [
     path("workouts/", include("workouts.urls")),
     path("meals/", include("meals.urls")),  
       path('chat/', include('ai_chat.urls')),
+      
     path('notifications/', include('notifications.urls')),
   
 ]
