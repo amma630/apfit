@@ -1,30 +1,242 @@
-{% extends 'users/base.html' %}
-{% load static %}
+{% extends "users/base.html" %}
+{% block title %}AI Health Chat{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'ai_chat.css' %}">
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg mt-8">
-    <h2 class="text-2xl font-semibold mb-4 text-green-700">🥦 USDA AI Nutrition Chat</h2>
+<div class="chat-container">
+    <h2>💬 Chat with Your AI Health Assistant</h2>
 
-    <form method="post" class="flex gap-2 mb-4">
+    <form method="POST" enctype="multipart/form-data" class="chat-form">
         {% csrf_token %}
-        <input type="text" name="question" placeholder="Ask about a food item..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400">
-        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Ask</button>
+        <label for="query">Ask a health-related question</label>
+        <textarea name="query" id="query" rows="4" placeholder="e.g. How many calories in a boiled egg?"></textarea>
+
+        <!-- 🎙 Stylish Speak Button -->
+        <button type="button" onclick="startListening()" class="mic-button">
+            <i class="fas fa-microphone mic-icon"></i> Speak
+        </button>
+        <p id="spokenText" class="spoken-text"></p>
+
+        <!-- <label for="image">Or upload an image (coming soon)</label>
+        <input type="file" name="image" accept="image/*" /> -->
+
+        <button type="submit">🚀 Ask Now</button>
     </form>
 
-    <div class="chat-box bg-gray-50 p-4 rounded-lg max-h-[400px] overflow-y-auto">
-        {% for message in chat_history %}
-            <div class="mb-3">
-                <p class="font-semibold text-blue-600">You:</p>
-                <p class="ml-2">{{ message.question }}</p>
-
-                <p class="font-semibold text-purple-600 mt-2">AI:</p>
-                <p class="ml-2">{{ message.response }}</p>
+    {% if query %}
+        <div class="chat-box">
+            <div class="bubble user">
+                <span class="label">👤 You</span>
+                <p>{{ query }}</p>
             </div>
-        {% empty %}
-            <p class="text-gray-500">No messages yet. Start chatting about nutrition! 🥗</p>
-        {% endfor %}
-    </div>
+            <div class="bubble ai">
+                <span class="label">🤖 AI</span>
+                <p>{{ response|safe }}</p>
+            </div>
+        </div>
+    {% else %}
+        <p class="placeholder">Ask anything about food, fitness, nutrition, or health. 🍎🏃‍♂️💪</p>
+    {% endif %}
 </div>
+
+<script>
+    function startListening() {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+
+        recognition.start();
+
+        recognition.onresult = function (event) {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById("query").value = transcript;
+            document.getElementById("spokenText").textContent = `🎤 You said: "${transcript}"`;
+        };
+
+        recognition.onerror = function (event) {
+            document.getElementById("spokenText").textContent = "❌ Speech error: " + event.error;
+        };
+    }
+</script>
+
+<style>
+:root {
+    --bg-light: #f9fafb;
+    --primary-color: #4f46e5;
+    --accent-color: #22c55e;
+    --text-color: #111827;
+    --muted: #6b7280;
+    --bubble-ai: #eef2ff;
+    --bubble-user: #dcfce7;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chat-container {
+    max-width: 768px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+}
+
+.chat-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    text-align: center;
+}
+
+.chat-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chat-form label {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.chat-form textarea,
+.chat-form input[type="file"] {
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border 0.3s;
+}
+
+.chat-form textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.chat-form button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.chat-form button:hover {
+    background: #4338ca;
+}
+
+.chat-box {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.bubble {
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    max-width: 85%;
+    line-height: 1.6;
+    position: relative;
+    font-size: 1rem;
+    box-shadow: var(--shadow);
+    animation: slideIn 0.4s ease-out;
+}
+
+.bubble.user {
+    background-color: var(--bubble-user);
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+.bubble.ai {
+    background-color: var(--bubble-ai);
+    align-self: flex-start;
+    border-bottom-left-radius: 0;
+}
+
+.label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.placeholder {
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.spoken-text {
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/* 🎙 Stylish Mic Button */
+.mic-button {
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.4rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+}
+
+.mic-button:hover {
+    background-color: #16a34a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(34, 197, 94, 0.4);
+}
+
+.mic-icon {
+    font-size: 1.2rem;
+    animation: pulseMic 2s infinite;
+}
+
+@keyframes pulseMic {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 600px) {
+    .chat-container {
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+    .bubble {
+        font-size: 0.95rem;
+        padding: 0.8rem 1rem;
+    }
+
+    .chat-form button {
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+    }
+}
+</style>
 {% endblock %}

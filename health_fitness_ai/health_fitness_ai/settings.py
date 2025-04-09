@@ -168,3 +168,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER ='illingi.srimanvaraprasad@gmail.com'
 EMAIL_HOST_PASSWORD = 'lpgfhcdmkdbvbfnz'  # Not your normal password!
 DEFAULT_FROM_EMAIL = 'illingi.srimanvaraprasad@gmail.com'
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")

@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
           <a href="{% url 'profile' %}" class="nav-link">Profile</a>
           <a href="{% url 'meal_log' %}" class="nav-link">Meal Log</a>
-          <a href="{% url 'ai_chat:chat' %}" class="nav-link">AI Chat</a>
+          <a href="{% url 'chat' %}" class="nav-link">AI Chat</a>
           <a href="{% url 'workout_list' %}" class="nav-link">Workout Log</a>
           <a href="{% url 'notification_list' %}" 
    class="notification-bell relative {% if has_new_notifications %}has-notification{% endif %}">
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="{% url 'dashboard' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">Dashboard</a>
           <a href="{% url 'profile' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">Profile</a>
           <a href="{% url 'meal_log' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">Meal Log</a>
-          <a href="{% url 'ai_chat:chat' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">AI Chat</a>
+          <a href="{% url 'chat' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">AI Chat</a>
           <a href="{% url 'workout_list' %}" class="hover:text-green-400 nav-link" onclick="toggleMenu()">Workout Log</a>
           <a href="{% url 'notification_list' %}" 
    class="hover:text-green-400 nav-link flex items-center justify-start" 
