@@ -1,10 +1,79 @@
 {% extends 'users/base.html' %}
 
+{% block title %}Invalid Link{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <h2>❌ Invalid or Expired Link</h2>
-    <p>Oops! The verification link is invalid or has expired.</p>
-    <p>If you're having trouble, try registering again or contact support.</p>
-    <a href="{% url 'register' %}" class="btn btn-secondary">Go to Register</a>
+<div class="error-container">
+    <div class="error-card">
+        <h2 class="error-title">❌ Invalid or Expired Link</h2>
+        <p class="error-text">
+            Oops! The verification link is either invalid or has expired.
+        </p>
+        <p class="error-text">
+            You can try registering again or contact support for help.
+        </p>
+        <a href="{% url 'register' %}" class="error-btn">🔁 Try Again</a>
+    </div>
 </div>
+<style>
+    .error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px;
+    min-height: 80vh;
+    background: linear-gradient(145deg, #ffe5e5, #f9dcdc);
+}
+
+.error-card {
+    background-color: #fff;
+    border-left: 8px solid #ff4d4f;
+    border-radius: 16px;
+    padding: 40px 30px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    animation: shakeFade 0.6s ease-in-out;
+    text-align: center;
+}
+
+.error-title {
+    font-size: 2rem;
+    color: #d32f2f;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.error-text {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.error-btn {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #d32f2f;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.error-btn:hover {
+    background-color: #b71c1c;
+    transform: translateY(-2px);
+}
+
+@keyframes shakeFade {
+    0% { transform: translateX(0); opacity: 0; }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-4px); }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
+</style>
 {% endblock %}
