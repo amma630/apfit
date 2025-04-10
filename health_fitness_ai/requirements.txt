@@ -96,3 +96,5 @@ urllib3==2.3.0
 websockets==14.2
 whitenoise==6.9.0
 yarl==1.19.0
+openai==1.70.0
+
