@@ -5,37 +5,61 @@
 {% block content %}
 <div class="register-container">
     <h2>Create an Account</h2>
+
     <form method="POST" enctype="multipart/form-data" class="register-form">
         {% csrf_token %}
-    
+
         <h4>Account Information</h4>
-        {{ user_form.non_field_errors }}
+        {% if user_form.non_field_errors %}
+            <div class="form-errors">{{ user_form.non_field_errors }}</div>
+        {% endif %}
         {% for field in user_form %}
             <p>
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
+                {% if field.name == 'password' or field.name == 'confirm_password' %}
+                    <span class="toggle-password" onclick="toggleVisibility('{{ field.id_for_label }}')" 
+                          aria-label="Toggle password visibility">
+                        👁️
+                    </span>
+                {% endif %}
                 {% if field.errors %}
-                    <small style="color:red">{{ field.errors|join:", " }}</small>
+                    <small class="error">{{ field.errors|join:", " }}</small>
                 {% endif %}
             </p>
         {% endfor %}
-    
+
         <h4>Profile Details</h4>
-        {{ profile_form.non_field_errors }}
+        {% if profile_form.non_field_errors %}
+            <div class="form-errors">{{ profile_form.non_field_errors }}</div>
+        {% endif %}
         {% for field in profile_form %}
             <p>
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
                 {% if field.errors %}
-                    <small style="color:red">{{ field.errors|join:", " }}</small>
+                    <small class="error">{{ field.errors|join:", " }}</small>
                 {% endif %}
             </p>
         {% endfor %}
-    
+
         <button type="submit">Register</button>
+
+        <p class="footer-links">
+            Already have an account? <a href="{% url 'login' %}">Login here</a><br>
+            <a href="{% url 'password_reset' %}">Forgot password?</a>
+        </p>
     </form>
-    
 </div>
+
+<script>
+function toggleVisibility(id) {
+    const input = document.getElementById(id);
+    if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+    }
+}
+</script>
 
 <style>
     .register-container {
@@ -60,6 +84,7 @@
 
     .register-form p {
         margin-bottom: 15px;
+        position: relative;
     }
 
     .register-form input, 
@@ -70,6 +95,7 @@
         border-radius: 6px;
         border: 1px solid #ccc;
         margin-top: 5px;
+        font-size: 14px;
     }
 
     .register-form button {
@@ -86,6 +112,39 @@
 
     .register-form button:hover {
         background-color: #16a085;
+    }
+
+    .toggle-password {
+        position: absolute;
+        top: 38px;
+        right: 12px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .error {
+        color: red;
+        font-size: 13px;
+    }
+
+    .form-errors {
+        color: red;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .footer-links {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .footer-links a {
+        color: #2980b9;
+        text-decoration: none;
+    }
+
+    .footer-links a:hover {
+        text-decoration: underline;
     }
 </style>
 {% endblock %}

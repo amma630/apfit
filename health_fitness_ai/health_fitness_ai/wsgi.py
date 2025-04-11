@@ -8,9 +8,18 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
 """
 
 import os
-
+import django
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'health_fitness_ai.settings')
+
+
+django.setup()
+application = get_wsgi_application()
+from django.core.management import call_command
+try:
+    call_command('migrate', interactive=False)
+except Exception as e:
+    print("Auto migration failed:", e)
 
 application = get_wsgi_application()
